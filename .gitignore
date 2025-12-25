@@ -16,3 +16,4 @@ downloads/*
 *.session
 *.pyc
 __pycache__/
+README.md.backup
