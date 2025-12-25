@@ -29,8 +29,6 @@ Based on [python-aria-mirror-bot](https://github.com/lzzy12/python-aria-mirror-b
 
 ---
 
----
-
 ## 🚀 Quick Start
 
 Choose your preferred deployment platform and follow the step-by-step guide:
