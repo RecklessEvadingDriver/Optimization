@@ -72,7 +72,9 @@ async def load_settings():
             await rmtree(p, ignore_errors=True)
     await database.connect()
     if database.db is not None:
-        BOT_ID = Config.BOT_TOKEN.split(":", 1)[0]
+        BOT_ID = (
+            Config.BOT_TOKEN.replace(",", " ").split()[0].split(":", 1)[0]
+        )
         settings = import_module("config")
         config_file = {
             key: value.strip() if isinstance(value, str) else value

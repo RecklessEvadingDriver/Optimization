@@ -1,4 +1,5 @@
 from sys import exit
+from bot.core.token_utils import parse_bot_tokens
 from importlib import import_module
 from logging import (
     FileHandler,
@@ -59,7 +60,12 @@ if not BOT_TOKEN:
     log_error("BOT_TOKEN variable is missing! Exiting now")
     exit(1)
 
-BOT_ID = BOT_TOKEN.split(":", 1)[0]
+TOKENS = parse_bot_tokens(BOT_TOKEN)
+if not TOKENS:
+    log_error("BOT_TOKEN variable is missing! Exiting now")
+    exit(1)
+
+BOT_ID = TOKENS[0].split(":", 1)[0]
 
 if DATABASE_URL := config_file.get("DATABASE_URL", "").strip():
     try:

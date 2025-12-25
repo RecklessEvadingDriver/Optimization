@@ -15,6 +15,7 @@ class Config:
     DATABASE_URL = ""
     DEFAULT_UPLOAD = "rc"
     EQUAL_SPLITS = False
+    TELEGRAM_ONLY = True
     EXCLUDED_EXTENSIONS = ""
     INCLUDED_EXTENSIONS = ""
     FFMPEG_CMDS = {}
@@ -27,7 +28,7 @@ class Config:
     JD_PASS = ""
     LEECH_DUMP_CHAT = ""
     LEECH_FILENAME_PREFIX = ""
-    LEECH_SPLIT_SIZE = 2097152000
+    LEECH_SPLIT_SIZE = 4194304000
     MEDIA_GROUP = False
     HYBRID_LEECH = False
     HYDRA_IP = ""
