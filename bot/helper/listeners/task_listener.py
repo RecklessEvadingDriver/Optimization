@@ -30,6 +30,7 @@ from ..ext_utils.files_utils import (
     remove_excluded_files,
     remove_non_included_files,
     move_and_merge,
+    is_archive,
 )
 from ..ext_utils.links_utils import is_gdrive_id
 from ..ext_utils.status_utils import get_readable_file_size
@@ -189,6 +190,14 @@ class TaskListener(TaskConfig):
 
         if self.join and not self.is_file:
             await join_files(up_path)
+
+        if (
+            not self.extract
+            and self.is_file
+            and is_archive(self.name)
+            and self.name.strip().lower().endswith(".zip")
+        ):
+            self.extract = True
 
         if self.extract and not self.is_nzb:
             up_path = await self.proceed_extract(up_path, gid)
