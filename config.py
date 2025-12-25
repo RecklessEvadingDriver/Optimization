@@ -1,7 +1,7 @@
 # REQUIRED CONFIG
 # You can provide multiple bot tokens separated by spaces or commas; the first handles commands and uploads are round-robin across the rest.
 BOT_TOKEN = "8354263940:AAH2pP1s2SZEQt2euI16cpJ6aOHf-C1opxQ"
-OWNER_ID = 8354263940
+OWNER_ID = 8284333794
 TELEGRAM_API = 34651439
 TELEGRAM_HASH = "4cb6bd37404e1f90c2b9082205351867"
 # OPTIONAL CONFIG
