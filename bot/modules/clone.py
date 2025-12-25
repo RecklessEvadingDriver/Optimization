@@ -32,6 +32,7 @@ from ..helper.telegram_helper.message_utils import (
     delete_message,
     send_status_message,
 )
+from .drive_disabled import drive_disabled, DRIVE_DISABLED_MSG
 
 
 class Clone(TaskListener):
@@ -293,4 +294,7 @@ class Clone(TaskListener):
 
 
 async def clone_node(client, message):
+    if drive_disabled():
+        await send_message(message, DRIVE_DISABLED_MSG)
+        return
     bot_loop.create_task(Clone(client, message).new_event())

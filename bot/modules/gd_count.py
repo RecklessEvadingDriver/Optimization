@@ -3,10 +3,14 @@ from ..helper.ext_utils.links_utils import is_gdrive_link
 from ..helper.ext_utils.status_utils import get_readable_file_size
 from ..helper.mirror_leech_utils.gdrive_utils.count import GoogleDriveCount
 from ..helper.telegram_helper.message_utils import delete_message, send_message
+from .drive_disabled import drive_disabled, DRIVE_DISABLED_MSG
 
 
 @new_task
 async def count_node(_, message):
+    if drive_disabled():
+        await send_message(message, DRIVE_DISABLED_MSG)
+        return
     args = message.text.split()
     user = message.from_user or message.sender_chat
     if username := user.username:
@@ -40,6 +44,3 @@ async def count_node(_, message):
         )
 
     await send_message(message, msg)
-
-
-

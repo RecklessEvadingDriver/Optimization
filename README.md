@@ -262,7 +262,7 @@ Fill up rest of the fields. Meaning of each field is discussed below.
 
 **1. Required Fields**
 
-- `BOT_TOKEN` (`Str`):  The Telegram Bot Token that you got from [@BotFather](https://t.me/BotFather).
+- `BOT_TOKEN` (`Str`):  The Telegram Bot Token that you got from [@BotFather](https://t.me/BotFather). Multiple tokens separated by space or comma are supported; the first one handles commands while others assist uploads.
 
 - `OWNER_ID` (`Int`):  The Telegram User ID (not username) of the Owner of the bot.
 
@@ -284,6 +284,8 @@ Fill up rest of the fields. Meaning of each field is discussed below.
 - `AUTHORIZED_CHATS` (`Str`): Fill user_id and chat_id of groups/users you want to authorize. To auth only specific topic(s) write it in this format `chat_id|thread_id` Ex:-100XXXXXXXXXXX or -100XXXXXXXXXXX|10 or -100XXXXXXXXXXX|10|12. Separate them by spaces.
 
 - `SUDO_USERS` (`Str`):  Fill user_id of users whom you want to give sudo permission. Separate them by spaces.
+
+- `TELEGRAM_ONLY` (`Bool`): Force the bot to disable Drive/rclone uploads and operate only as a Telegram leech/uploader. Default is `True`.
 
 - `UPLOAD_PATHS` (`Dict`): Send Dict of keys that have path values. Example: {"path 1": "remote:rclonefolder", "path 2": "gdrive1 id", "path 3": "tg chat id", "path 4": "mrcc:remote:", "path 5": "b: @username"}. 
 
@@ -373,7 +375,7 @@ see [Using Service Accounts](https://github.com/anasty17/mirror-leech-telegram-b
 
 **6. Leech**
 
-- `LEECH_SPLIT_SIZE` (`Int`): Size of split in bytes. Default is `2GB`. Default is `4GB` if your account is premium.
+- `LEECH_SPLIT_SIZE` (`Int`): Size of split in bytes. Default is `4GB` (parts above 4GB are split automatically).
 - `AS_DOCUMENT` (`Bool`): Default type of Telegram file upload. Default is `False` mean as media.
 
 - `EQUAL_SPLITS` (`Bool`): Split files larger than **LEECH_SPLIT_SIZE** into equal parts size (Not working with zip cmd). Default is `False`.

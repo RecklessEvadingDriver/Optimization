@@ -7,6 +7,7 @@ from ..helper.ext_utils.bot_utils import (
 from ..helper.mirror_leech_utils.gdrive_utils.search import GoogleDriveSearch
 from ..helper.telegram_helper.button_build import ButtonMaker
 from ..helper.telegram_helper.message_utils import send_message, edit_message
+from .drive_disabled import drive_disabled, DRIVE_DISABLED_MSG
 
 
 async def list_buttons(user_id, is_recursive=True, user_token=False):
@@ -89,11 +90,11 @@ async def select_type(_, query):
 
 @new_task
 async def gdrive_search(_, message):
+    if drive_disabled():
+        await send_message(message, DRIVE_DISABLED_MSG)
+        return
     if len(message.text.split()) == 1:
         return await send_message(message, "Send a search key along with command")
     user_id = message.from_user.id
     buttons = await list_buttons(user_id)
     await send_message(message, "Choose list options:", buttons)
-
-
-

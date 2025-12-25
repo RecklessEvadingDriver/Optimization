@@ -61,6 +61,7 @@ class TelegramUploader:
         self._media_group = False
         self._is_private = False
         self._sent_msg = None
+        self._upload_client = listener.client
         self._user_session = self._listener.user_transmission
         self._error = ""
 
@@ -69,7 +70,7 @@ class TelegramUploader:
             if self._user_session:
                 TgClient.user.stop_transmission()
             else:
-                self._listener.client.stop_transmission()
+                self._upload_client.stop_transmission()
         chunk_size = current - self._last_uploaded
         self._last_uploaded = current
         self._processed_bytes += chunk_size
@@ -96,6 +97,8 @@ class TelegramUploader:
                 else self._listener.message.text.lstrip("/")
             )
             try:
+                if not self._user_session:
+                    self._upload_client = TgClient.next_bot_client()
                 if self._user_session:
                     self._sent_msg = await TgClient.user.send_message(
                         chat_id=self._listener.up_dest,
@@ -104,7 +107,7 @@ class TelegramUploader:
                         disable_notification=True,
                     )
                 else:
-                    self._sent_msg = await self._listener.client.send_message(
+                    self._sent_msg = await self._upload_client.send_message(
                         chat_id=self._listener.up_dest,
                         text=msg,
                         message_thread_id=self._listener.chat_thread_id,
@@ -125,7 +128,14 @@ class TelegramUploader:
                     disable_notification=True,
                 )
         else:
-            self._sent_msg = self._listener.message
+            self._upload_client = TgClient.next_bot_client()
+            try:
+                self._sent_msg = await self._upload_client.get_messages(
+                    chat_id=self._listener.message.chat.id,
+                    message_ids=self._listener.mid,
+                )
+            except Exception:
+                self._sent_msg = self._listener.message
         return True
 
     async def _prepare_file(self, file_, dirpath):
@@ -190,7 +200,7 @@ class TelegramUploader:
     async def _send_media_group(self, subkey, key, msgs):
         for index, msg in enumerate(msgs):
             if self._listener.hybrid_leech or not self._user_session:
-                msgs[index] = await self._listener.client.get_messages(
+                msgs[index] = await self._upload_client.get_messages(
                     chat_id=msg[0], message_ids=msg[1]
                 )
             else:
@@ -254,7 +264,10 @@ class TelegramUploader:
                                 for subkey, msgs in list(value.items()):
                                     if len(msgs) > 1:
                                         await self._send_media_group(subkey, key, msgs)
-                    if self._listener.hybrid_leech and self._listener.user_transmission:
+                    if (
+                        self._listener.hybrid_leech
+                        and self._listener.user_transmission
+                    ):
                         self._user_session = f_size > 2097152000
                         if self._user_session:
                             self._sent_msg = await TgClient.user.get_messages(
@@ -262,7 +275,7 @@ class TelegramUploader:
                                 message_ids=self._sent_msg.id,
                             )
                         else:
-                            self._sent_msg = await self._listener.client.get_messages(
+                            self._sent_msg = await self._upload_client.get_messages(
                                 chat_id=self._sent_msg.chat.id,
                                 message_ids=self._sent_msg.id,
                             )

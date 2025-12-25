@@ -3,6 +3,7 @@ from base64 import b64encode
 from re import match as re_match
 
 from .. import LOGGER, bot_loop, task_dict_lock, DOWNLOAD_DIR
+from ..core.config_manager import Config
 from ..helper.ext_utils.bot_utils import (
     get_content_type,
     sync_to_async,
@@ -365,19 +366,33 @@ class Mirror(TaskListener):
 
 
 async def mirror(client, message):
-    bot_loop.create_task(Mirror(client, message).new_event())
+    bot_loop.create_task(
+        Mirror(client, message, is_leech=Config.TELEGRAM_ONLY).new_event()
+    )
 
 
 async def qb_mirror(client, message):
-    bot_loop.create_task(Mirror(client, message, is_qbit=True).new_event())
+    bot_loop.create_task(
+        Mirror(
+            client, message, is_leech=Config.TELEGRAM_ONLY, is_qbit=True
+        ).new_event()
+    )
 
 
 async def jd_mirror(client, message):
-    bot_loop.create_task(Mirror(client, message, is_jd=True).new_event())
+    bot_loop.create_task(
+        Mirror(
+            client, message, is_leech=Config.TELEGRAM_ONLY, is_jd=True
+        ).new_event()
+    )
 
 
 async def nzb_mirror(client, message):
-    bot_loop.create_task(Mirror(client, message, is_nzb=True).new_event())
+    bot_loop.create_task(
+        Mirror(
+            client, message, is_leech=Config.TELEGRAM_ONLY, is_nzb=True
+        ).new_event()
+    )
 
 
 async def leech(client, message):

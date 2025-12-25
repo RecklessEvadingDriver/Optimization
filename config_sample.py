@@ -1,4 +1,5 @@
 # REQUIRED CONFIG
+# You can provide multiple bot tokens separated by spaces or commas; the first handles commands and uploads are round-robin across the rest.
 BOT_TOKEN = ""
 OWNER_ID = 0
 TELEGRAM_API = 0
@@ -11,6 +12,7 @@ AUTHORIZED_CHATS = ""
 SUDO_USERS = ""
 DATABASE_URL = ""
 STATUS_LIMIT = 4
+TELEGRAM_ONLY = True
 DEFAULT_UPLOAD = "rc"
 STATUS_UPDATE_INTERVAL = 15
 FILELION_API = ""
@@ -23,6 +25,7 @@ USE_SERVICE_ACCOUNTS = False
 NAME_SUBSTITUTE = r""
 FFMPEG_CMDS = {}
 UPLOAD_PATHS = {}
+BYTES_IN_GB = 1024 * 1024 * 1024
 # GDrive Tools
 GDRIVE_ID = ""
 IS_TEAM_DRIVE = False
@@ -66,7 +69,8 @@ HYDRA_API_KEY = ""
 UPSTREAM_REPO = ""
 UPSTREAM_BRANCH = "master"
 # Leech
-LEECH_SPLIT_SIZE = 0
+# Split files at or above 4GB (Telegram limit; 4 * BYTES_IN_GB)
+LEECH_SPLIT_SIZE = 4 * BYTES_IN_GB
 AS_DOCUMENT = False
 EQUAL_SPLITS = False
 MEDIA_GROUP = False
